@@ -30,6 +30,7 @@ jobs:
       - run: pip install -e '.[test]' transformers
       - run: python -c "import transformers; print(transformers.__version__)"
       - name: parity tests must not be skipped
+        shell: bash  # explicit bash runs with -o pipefail, so a pytest failure isn't hidden by tee
         run: pytest -q tests/test_parity.py -rs | tee out.txt && ! grep -q skipped out.txt
 
   readme-examples:
