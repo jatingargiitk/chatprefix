@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e '.[test]'
+      - run: pytest -q
+
+  parity:
+    # renders the vendored templates with transformers' own renderer and compares
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e '.[test]' transformers
+      - run: python -c "import transformers; print(transformers.__version__)"
+      - name: parity tests must not be skipped
+        run: pytest -q tests/test_parity.py -rs | tee out.txt && ! grep -q skipped out.txt
+
+  readme-examples:
+    # re-runs every README command against pinned Hub revisions and checks the output is unchanged
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e .
+      - run: ./examples/readme_examples.sh
+      - run: git diff --exit-code examples/expected

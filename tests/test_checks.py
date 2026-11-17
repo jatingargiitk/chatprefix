@@ -67,6 +67,7 @@ def test_phi4_mini_appends_eos_to_every_render():
 def test_mistral_moves_system_to_last_user_turn():
     f = run("mistral-7b-instruct-v0.3")
     assert statuses(f, "system") == [WARN]
+    assert "cut to 2 or 4 messages" in by_check(f, "system")[0].details[0]
     assert statuses(f, "prefix") == [FAIL, FAIL]
     assert statuses(f, "genprompt") == [FAIL, FAIL]
     assert statuses(f, "tools") == [OK]

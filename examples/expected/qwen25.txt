@@ -1,0 +1,11 @@
+$ chatprefix Qwen/Qwen2.5-0.5B-Instruct --revision 7ae557604adf67be50417f59c2c2f167def9a775
+chatprefix Qwen/Qwen2.5-0.5B-Instruct@7ae557604adf
+  ok   prefix    each of 4 longer conversation(s) starts with the render of the shorter one
+  ok   genprompt add_generation_prompt=True matches the rendered turn for 2 assistant message(s)
+  ok   system    system message is rendered
+  ok   tools     tools= is rendered into the prompt
+  ok   bos       no bos_token configured
+  ok   eos       assistant turns end with a stop token ('<|im_end|>', '<|endoftext|>')
+  INFO mask      no {% generation %} block: return_assistant_tokens_mask (and TRL assistant_only_loss) can't be used
+0 fail, 0 warn
+[exit 0]

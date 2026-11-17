@@ -1,0 +1,12 @@
+$ chatprefix deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B --revision ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562 --check genprompt
+chatprefix deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B@ad9f0ae0864d
+  FAIL genprompt the generation prompt before message 3 is not how the template writes that turn
+                 first difference at char 100, after 'apital of France?<｜Assistant｜>'
+                 shorter render has: '<think>\n'
+                 longer render has:  'Paris.<｜end▁of▁sentence｜>'
+  FAIL genprompt the generation prompt before message 5 is not how the template writes that turn
+                 first difference at char 159, after 'er｜>And of Italy?<｜Assistant｜>'
+                 shorter render has: '<think>\n'
+                 longer render has:  'Rome.<｜end▁of▁sentence｜>'
+2 fail, 0 warn
+[exit 1]

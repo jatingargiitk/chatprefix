@@ -66,6 +66,11 @@ def _snip(s: str, limit: int = 60) -> str:
     return repr(s)
 
 
+def _or(items) -> str:
+    items = [str(i) for i in items]
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " or " + items[-1]
+
+
 def divergence(earlier: str, later: str) -> List[str]:
     i = 0
     n = min(len(earlier), len(later))
@@ -184,7 +189,20 @@ class Checker:
             return [Finding("system", WARN, f"template rejects a system message: {e}")]
         content = system.get("content")
         if isinstance(content, str) and content and content not in text:
-            return [Finding("system", WARN, "system message is silently dropped from the render")]
+            shown_in = []
+            for k in range(1, len(conv)):
+                try:
+                    if content in self.render(conv[:k], add_generation_prompt=conv[k - 1].get("role") == "user"):
+                        shown_in.append(k)
+                except TemplateRenderError:
+                    pass
+            details = []
+            if shown_in:
+                details.append(
+                    f"it does appear when the conversation is cut to {_or(shown_in)} messages, "
+                    "so training on whole conversations loses it"
+                )
+            return [Finding("system", WARN, "system message is silently dropped from the full conversation", details)]
         return [Finding("system", OK, "system message is rendered")]
 
     # -- tools ---------------------------------------------------------------------------------
