@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chatprefix"
+version = "0.1.0"
+description = "Check a Hugging Face chat template for multi-turn prefix breaks, generation-prompt mismatches, dropped system messages and tools, double BOS and missing stop tokens."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Jatin Garg" }]
+requires-python = ">=3.9"
+dependencies = ["jinja2>=3.1.6", "tokenizers>=0.15"]
+keywords = ["llm", "chat-template", "huggingface", "transformers", "fine-tuning", "kv-cache", "prefix-caching"]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+chatprefix = "chatprefix.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jatingargiitk/chatprefix"
+
+[tool.setuptools]
+packages = ["chatprefix"]
